@@ -14,10 +14,10 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(of = {"id"})
 public class Film {
-    Long id;
-    @NotNull @NotBlank String name;
-    @Size(max = 200, message = "{validation.name.size.too_long}") String description;
+    private Long id;
+    @NotNull @NotBlank private String name;
+    @Size(max = 200, message = "{validation.name.size.too_long}") private String description;
     @DateAfter
-    LocalDate releaseDate;
-    @Min(60) Integer duration;
+    private LocalDate releaseDate;
+    @Min(60) private Integer duration;
 }
