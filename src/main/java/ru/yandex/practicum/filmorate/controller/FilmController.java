@@ -2,11 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ErrorResponse;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -55,17 +51,5 @@ public class FilmController {
     @GetMapping("/popular")
     public Collection<Film> getPopular(@RequestParam(required = false, defaultValue = "10") final Integer count) {
         return filmService.getPopular(count);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handle(final ValidationException e) {
-        return new ErrorResponse("Ошибка валидации", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handle(final NotFoundException e) {
-        return new ErrorResponse("Не найдено", e.getMessage());
     }
 }

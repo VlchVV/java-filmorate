@@ -2,11 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ErrorResponse;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
@@ -63,17 +59,5 @@ public class UserController {
     @GetMapping("/{userId}/friends/common/{otherId}")
     public Collection<User> getCommonFriends(@PathVariable Long userId, @PathVariable Long otherId) {
         return userService.getCommonFriends(userId, otherId);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handle(final ValidationException e) {
-        return new ErrorResponse("Ошибка валидации", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handle(final NotFoundException e) {
-        return new ErrorResponse("Не найдено", e.getMessage());
     }
 }
