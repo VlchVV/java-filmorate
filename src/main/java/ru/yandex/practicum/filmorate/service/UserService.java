@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -20,7 +21,7 @@ public class UserService {
     UserStorage userStorage;
 
     @Autowired
-    public UserService(UserStorage userStorage) {
+    public UserService(@Qualifier("userDbStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -75,7 +76,7 @@ public class UserService {
             return;
         }
         userStorage.addFriend(userId, friendId);
-        userStorage.addFriend(friendId, userId);
+        //userStorage.addFriend(friendId, userId);
         log.debug("Пользователь id = " + friendId + " добавлен в друзья к id = " + userId + ".");
     }
 
@@ -97,7 +98,7 @@ public class UserService {
             return;
         }
         userStorage.deleteFriend(userId, friendId);
-        userStorage.deleteFriend(friendId, userId);
+        //userStorage.deleteFriend(friendId, userId);
         log.debug("Пользователь id = " + friendId + " удален из друзей у id = " + userId + ".");
     }
 

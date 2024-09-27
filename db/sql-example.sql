@@ -77,28 +77,36 @@ where
 
 -- FilmController
 -- GET /films
-select
+SELECT
 	f.id,
 	f.name,
 	f.description,
 	f.release_dt,
 	f.duration,
-	f.rating
-from
-	film f;
+	f.rating_id,
+	r.name rating_name
+FROM
+	film f
+JOIN rating r
+	ON
+	f.rating_id = r.id;
 
 -- GET /films/{filmId}
-select
+SELECT
 	f.id,
 	f.name,
 	f.description,
 	f.release_dt,
 	f.duration,
-	f.rating
-from
+	f.rating_id,
+	r.name rating_name
+FROM
 	film f
-where
-    f.id = :filmId;
+JOIN rating r
+	ON
+	f.rating_id = r.id
+WHERE
+	f.id = :filmId;
 
 -- GET /films/popular?count={count}
 
