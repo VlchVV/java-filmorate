@@ -98,7 +98,6 @@ public class UserService {
             return;
         }
         userStorage.deleteFriend(userId, friendId);
-        //userStorage.deleteFriend(friendId, userId);
         log.debug("Пользователь id = " + friendId + " удален из друзей у id = " + userId + ".");
     }
 

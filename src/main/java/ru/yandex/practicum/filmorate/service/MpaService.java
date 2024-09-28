@@ -11,7 +11,7 @@ import java.util.Collection;
 @Slf4j
 @Service
 public class MpaService {
-    MpaStorage mpaStorage;
+    private final MpaStorage mpaStorage;
 
     public MpaService(MpaStorage mpaStorage) {
         this.mpaStorage = mpaStorage;

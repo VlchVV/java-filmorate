@@ -11,7 +11,7 @@ import java.util.Collection;
 @Slf4j
 @Service
 public class GenreService {
-    GenreStorage genreStorage;
+    private final GenreStorage genreStorage;
 
     public GenreService(GenreStorage genreStorage) {
         this.genreStorage = genreStorage;
