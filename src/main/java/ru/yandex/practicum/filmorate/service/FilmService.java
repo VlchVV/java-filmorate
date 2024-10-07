@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.genre.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.mpa.MpaStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.Collection;
@@ -19,10 +23,14 @@ import java.util.stream.Collectors;
 public class FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
+    private final MpaStorage mpaStorage;
+    private final GenreStorage genreStorage;
 
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage, @Qualifier("userDbStorage") UserStorage userStorage, MpaStorage mpaStorage, GenreStorage genreStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
+        this.mpaStorage = mpaStorage;
+        this.genreStorage = genreStorage;
     }
 
     public Collection<Film> findAll() {
@@ -36,6 +44,18 @@ public class FilmService {
 
     public Film create(Film film) {
         log.debug("Начато создание фильма", film);
+        if (film.getMpa() != null && mpaStorage.findMpa(film.getMpa().getId()).isEmpty()) {
+            log.error("Создание фильма невозможно. Рейтинг с id = " + film.getMpa().getId() + " не найден");
+            throw new ValidationException("Создание фильма невозможно. Рейтинг с id = " + film.getMpa().getId() + " не найден");
+        }
+        if (film.getGenres() != null) {
+            for (Genre genre : film.getGenres()) {
+                if (genreStorage.findGenre(genre.getId()).isEmpty()) {
+                    log.error("Создание фильма невозможно. Жанр с id = " + genre.getId() + " не найден");
+                    throw new ValidationException("Создание фильма невозможно. Жанр с id = " + genre.getId() + " не найден");
+                }
+            }
+        }
         // сохраняем новый фильм
         filmStorage.create(film);
         log.debug("Фильм создан: " + film);

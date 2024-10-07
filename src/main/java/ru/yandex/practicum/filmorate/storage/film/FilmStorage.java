@@ -8,16 +8,16 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface FilmStorage {
-    public Collection<Film> findAll();
+    Collection<Film> findAll();
 
-    public Film create(@Valid @RequestBody Film film);
+    Film create(@Valid @RequestBody Film film);
 
-    public Film update(@Valid @RequestBody Film newFilm);
+    Film update(@Valid @RequestBody Film newFilm);
 
-    public Optional<Film> findFilm(Long filmId);
+    Optional<Film> findFilm(Long filmId);
 
-    public void addLike(Long filmId, Long userId);
+    void addLike(Long filmId, Long userId);
 
-    public void deleteLike(Long filmId, Long userId);
+    void deleteLike(Long filmId, Long userId);
 
 }
